@@ -172,7 +172,13 @@
 
   /* ---------- ESTILOS ---------- */
   .styles-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line); border:1px solid var(--line); perspective:1200px;}
-  .style-card{background:var(--ink); padding:34px 24px; transition:background 200ms ease, transform 120ms ease-out; transform-style:preserve-3d; transform:translateZ(0);}
+  .style-card{background:var(--ink); padding:34px 24px; transition:background 200ms ease, transform 500ms ease, opacity 500ms ease; transform-style:preserve-3d; opacity:0; transform:translateY(22px) translateZ(0);}
+  .styles-grid.is-visible .style-card{opacity:1; transform:translateY(0) translateZ(0);}
+  .styles-grid.is-visible .style-card:nth-child(1){transition-delay:0ms;}
+  .styles-grid.is-visible .style-card:nth-child(2){transition-delay:80ms;}
+  .styles-grid.is-visible .style-card:nth-child(3){transition-delay:160ms;}
+  .styles-grid.is-visible .style-card:nth-child(4){transition-delay:240ms;}
+  .styles-grid.is-visible .style-card:nth-child(5){transition-delay:320ms;}
   .style-card:hover{background:var(--surface);}
   .icon-disc{
     width:58px; height:58px; border-radius:50%; margin-bottom:22px;
@@ -215,6 +221,22 @@
   .filter-bar button:hover{color:var(--paper); border-color:var(--gold);}
   .filter-bar button.is-active{background:var(--paper); color:var(--ink); border-color:var(--paper);}
 
+  .beforeafter{margin-bottom:56px; border:1px solid var(--line); border-radius:8px; padding:28px; background:var(--surface);}
+  .ba-head{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:22px;}
+  .ba-head h3{font-size:1.5rem;}
+  .ba-head p{color:var(--paper-dim); font-size:0.9rem; max-width:46ch;}
+  .ba-slider{position:relative; max-width:420px; margin:0 auto; aspect-ratio:3/4; border-radius:8px; overflow:hidden; border:1px solid var(--gold); cursor:ew-resize; touch-action:none; user-select:none;}
+  .ba-slider img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; pointer-events:none;}
+  .ba-before-wrap{position:absolute; inset:0; clip-path:inset(0 50% 0 0); z-index:2;}
+  .ba-handle{position:absolute; top:0; bottom:0; left:50%; width:0; z-index:3; transform:translateX(-50%);}
+  .ba-handle::before{content:""; position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--gold-bright); transform:translateX(-50%);}
+  .ba-handle-grip{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:38px; height:38px; border-radius:50%; background:var(--gold); color:#050400; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 20px -6px rgba(0,0,0,0.7); touch-action:none;}
+  .ba-handle-grip svg{width:18px; height:18px;}
+  .ba-tag{position:absolute; top:14px; z-index:2; font-size:0.75rem; letter-spacing:0.3px; padding:5px 12px; border-radius:14px; background:rgba(0,0,0,0.65); color:var(--paper); border:1px solid var(--line-strong);}
+  .ba-tag-before{left:14px;}
+  .ba-tag-after{right:14px;}
+  @media (max-width:560px){.beforeafter{padding:18px;}}
+
   .gallery-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; perspective:1600px;}
   .gallery-item{position:relative; overflow:hidden; aspect-ratio:3/4; background:linear-gradient(155deg,#1a1a1a,#050505); border:1px solid var(--gold); cursor:pointer; transform-style:preserve-3d; transition:transform 160ms ease-out, box-shadow 160ms ease-out; border-radius:6px; padding:8px;}
   .gallery-item:hover{box-shadow:0 30px 50px -18px rgba(0,0,0,0.7);}
@@ -236,6 +258,10 @@
 
   /* ---------- DEPOIMENTOS ---------- */
   .rating-summary{display:flex; align-items:center; gap:18px;}
+  .google-brand{display:flex; align-items:center; gap:9px; margin-bottom:14px;}
+  .google-brand svg{width:22px; height:22px;}
+  .google-brand span{font-size:0.85rem; color:var(--paper-dim); letter-spacing:0.2px; font-weight:500;}
+  .google-actions{display:flex; flex-wrap:wrap; gap:12px; align-items:center;}
   .rating-summary .num{font-family:var(--font-display); font-size:3rem; font-weight:600;}
   .stars{color:var(--gold-bright); display:flex; gap:3px;}
   .stars svg{width:16px; height:16px;}
@@ -303,6 +329,10 @@
   .social-row a:hover{border-color:var(--gold); color:var(--gold-bright);}
   .social-row svg{width:17px; height:17px;}
 
+  .styles-dots{display:none; gap:8px; justify-content:center; margin-top:16px;}
+  .styles-dots button{width:8px; height:8px; border-radius:50%; border:1px solid var(--line-strong); background:transparent; padding:0;}
+  .styles-dots button.is-active{background:var(--gold); border-color:var(--gold);}
+
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:980px){
     .nav-links{display:none;}
@@ -316,10 +346,18 @@
     .loc-visual{min-height:220px;}
     .section{padding:72px 0;}
   }
+  @media (max-width:700px){
+    .styles-grid{
+      display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:14px;
+      background:none; border:none; padding:4px 4px 8px; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    }
+    .styles-grid::-webkit-scrollbar{display:none;}
+    .style-card{flex:0 0 78%; scroll-snap-align:center; background:var(--surface); border:1px solid var(--line); border-radius:10px;}
+    .styles-dots{display:flex;}
+  }
   @media (max-width:560px){
     .wrap{padding:0 18px;}
     .field-row{grid-template-columns:1fr;}
-    .styles-grid{grid-template-columns:1fr;}
     .gallery-grid{grid-template-columns:repeat(2,1fr); gap:12px;}
     .footer-grid{grid-template-columns:1fr; gap:32px;}
     .hero-stats{gap:24px;}
@@ -380,8 +418,8 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l7-14 3 6 3-4 3 6"/></svg>
           Capão Redondo, zona sul de São Paulo
         </div>
-        <h1>Cada traço fica.<br><span>Cada história, também.</span></h1>
-        <p class="lede">Bruno Kzimiro tatua traço fino, realismo, animais e trabalhos coloridos no estúdio na zona sul de São Paulo. Mais de 19 avaliações no Google, nota máxima.</p>
+        <h1>Cada tatuagem é única.<br><span>Porque a sua história também é.</span></h1>
+        <p class="lede">Bruno Kzimiro transforma ideias, memórias e referências em tatuagens exclusivamente feitas para você — com precisão, personalidade e atenção em cada detalhe. Estúdio no Capão Redondo, zona sul de São Paulo, avaliado com nota máxima no Google.</p>
         <div class="hero-actions">
           <a href="#orcamento" class="btn btn-gold">Pedir orçamento</a>
           <a href="#galeria" class="btn btn-ghost">Ver galeria</a>
@@ -439,35 +477,36 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Especialidades</h2>
-        <p class="lede">Estilos trabalhados com mais frequência no estúdio.</p>
+        <p class="lede">O que mais sai da máquina do Bruno, no dia a dia do estúdio.</p>
       </div>
-      <div class="styles-grid">
+      <div class="styles-grid" id="stylesGrid">
         <div class="style-card">
           <span class="icon-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 12c4-6 14-6 18 0"/><path d="M3 12c4 6 14 6 18 0"/></svg></span>
           <h3>Traço fino</h3>
-          <p>Linhas delicadas e precisas, para desenhos autorais ou florais discretos.</p>
+          <p>Traço leve e preciso. Pra quem quer algo discreto sem abrir mão do detalhe.</p>
         </div>
         <div class="style-card">
           <span class="icon-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/></svg></span>
           <h3>Realismo</h3>
-          <p>Retratos, olhos e texturas com profundidade e sombreamento fiel à referência.</p>
+          <p>Retrato, olho, textura de pele — peças que parecem ter saído de uma foto.</p>
         </div>
         <div class="style-card">
           <span class="icon-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 3c-3 3-6 5-6 9a6 6 0 0012 0c0-4-3-6-6-9z"/></svg></span>
           <h3>Animais</h3>
-          <p>De pets do dia a dia a felinos em composições de fechamento.</p>
+          <p>Do cachorro de estimação ao felino em fechamento inteiro, com pelo e expressão bem trabalhados.</p>
         </div>
         <div class="style-card">
           <span class="icon-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 12a8 8 0 1116 0 4 4 0 01-4 4h-1a2 2 0 000 4"/><circle cx="8.5" cy="10.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="12" cy="7.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="15.5" cy="10.5" r="0.8" fill="currentColor" stroke="none"/></svg></span>
           <h3>Colorida</h3>
-          <p>Paletas vivas aplicadas em lettering, ilustrações e composições autorais.</p>
+          <p>Cor com intenção, não só pra preencher espaço — em lettering, flores e desenhos autorais.</p>
         </div>
         <div class="style-card">
           <span class="icon-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 010 17z" fill="currentColor" stroke="none"/></svg></span>
           <h3>Preto e cinza</h3>
-          <p>Contraste e sombreamento clássico, para peças de grande impacto visual.</p>
+          <p>Sombra bem construída e contraste que dá profundidade, sem perder o traço.</p>
         </div>
       </div>
+      <div class="styles-dots" id="stylesDots"></div>
     </div>
   </section>
 
@@ -495,6 +534,26 @@
         <div class="carousel-dots" id="carouselDots"></div>
       </div>
 
+      <div class="beforeafter">
+        <div class="ba-head">
+          <h3>Cobertura de tatuagem</h3>
+          <p>Da homenagem em texto para um fechamento em realismo animal, na mesma cliente. Arraste pra comparar.</p>
+        </div>
+        <div class="ba-slider" id="baSlider">
+          <img src="assets/img/g12-leopards.jpg" alt="Depois: cobertura com onça-pintada e filhotes nas costas">
+          <div class="ba-before-wrap" id="baBeforeWrap">
+            <img src="assets/img/g08-lettering-back.jpg" alt="Antes: tatuagem de frase e desenho nas costas">
+          </div>
+          <span class="ba-tag ba-tag-before">Antes</span>
+          <span class="ba-tag ba-tag-after">Depois</span>
+          <div class="ba-handle" id="baHandle">
+            <span class="ba-handle-grip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
       <div class="filter-bar" id="filterBar">
         <button class="is-active" data-filter="todos">Todos</button>
         <button data-filter="fino">Traço fino</button>
@@ -512,11 +571,9 @@
         <figure class="gallery-item" data-cat="colorida"><img src="assets/img/g05-lettering-color.jpg" alt="Tatuagem colorida com letras no braço" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
         <figure class="gallery-item" data-cat="fino"><img src="assets/img/g06-ankle-boot.jpg" alt="Tatuagem fine line de bota e flores no tornozelo" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
         <figure class="gallery-item" data-cat="fino"><img src="assets/img/g07-mandala-back.jpg" alt="Tatuagem fine line de mandala floral nas costas" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
-        <figure class="gallery-item" data-cat="fino"><img src="assets/img/g08-lettering-back.jpg" alt="Tatuagem de frase escrita nas costas" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
         <figure class="gallery-item" data-cat="fino"><img src="assets/img/g09-dragon-spine.jpg" alt="Tatuagem de dragão com caracteres chineses na coluna" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
         <figure class="gallery-item" data-cat="fino"><img src="assets/img/g10-hummingbird.jpg" alt="Tatuagem fine line de beija-flor e girassol no ombro" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
         <figure class="gallery-item" data-cat="fino"><img src="assets/img/g11-mermaid.jpg" alt="Tatuagem ilustrativa de sereia no braço" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
-        <figure class="gallery-item" data-cat="realismo animais"><img src="assets/img/g12-leopards.jpg" alt="Tatuagem realista de onça-pintada e filhotes nas costas" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
         <figure class="gallery-item" data-cat="realismo animais"><img src="assets/img/g13-eye-clock-eagle.jpg" alt="Tatuagem realista de olho, relógio e águia no antebraço" loading="lazy"><span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span></figure>
       </div>
     </div>
@@ -527,6 +584,15 @@
     <div class="wrap">
       <div class="section-head">
         <div>
+          <div class="google-brand">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span>Google Avaliações</span>
+          </div>
           <h2 style="margin-bottom:18px;">O que dizem no Google</h2>
           <div class="rating-summary">
             <span class="num">5.0</span>
@@ -542,7 +608,10 @@
             </div>
           </div>
         </div>
-        <a href="#" id="reviewsLink" target="_blank" rel="noopener" class="btn btn-ghost">Ver todas no Google</a>
+        <div class="google-actions">
+          <a href="#" id="writeReviewLink" target="_blank" rel="noopener" class="btn btn-gold">Avaliar no Google</a>
+          <a href="#" id="reviewsLink" target="_blank" rel="noopener" class="btn btn-ghost">Ver todas no Google</a>
+        </div>
       </div>
 
       <div class="testi-track">
@@ -585,7 +654,7 @@
     <div class="wrap quote-wrap">
       <div class="quote-side">
         <h2 style="margin-bottom:20px;">Peça seu orçamento</h2>
-        <p>Preencha os dados abaixo. Sua ideia é organizada automaticamente e enviada direto para o WhatsApp do Bruno — sem precisar copiar nada.</p>
+        <p>Preencha os dados abaixo. Sua ideia chega prontinha no WhatsApp do Bruno — sem você ter que copiar e colar nada.</p>
         <ul class="quote-list">
           <li><b>01</b><span>Conte onde no corpo e o tamanho aproximado da tatuagem.</span></li>
           <li><b>02</b><span>Descreva a ideia ou envie uma referência visual pela conversa.</span></li>
@@ -837,6 +906,28 @@
     touchStartX = null;
   });
 
+  // ---------- ANTES / DEPOIS (cobertura) ----------
+  var baSlider = document.getElementById('baSlider');
+  var baBeforeWrap = document.getElementById('baBeforeWrap');
+  var baHandle = document.getElementById('baHandle');
+  if(baSlider && baBeforeWrap && baHandle){
+    var baDragging = false;
+    function baSetPos(pct){
+      pct = Math.max(4, Math.min(96, pct));
+      baBeforeWrap.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+      baHandle.style.left = pct + '%';
+    }
+    function baMove(clientX){
+      var r = baSlider.getBoundingClientRect();
+      baSetPos(((clientX - r.left) / r.width) * 100);
+    }
+    baSetPos(50);
+    baSlider.addEventListener('pointerdown', function(e){ baDragging = true; baMove(e.clientX); });
+    window.addEventListener('pointermove', function(e){ if(baDragging) baMove(e.clientX); });
+    window.addEventListener('pointerup', function(){ baDragging = false; });
+    baSlider.addEventListener('click', function(e){ baMove(e.clientX); });
+  }
+
   // ---------- GALLERY FILTER ----------
   var filterBar = document.getElementById('filterBar');
   var galleryItems = document.querySelectorAll('#galleryGrid .gallery-item');
@@ -939,6 +1030,50 @@
   document.getElementById('igLink').href = CONFIG.instagramUrl;
   var reviewsLink = document.getElementById('reviewsLink');
   if(reviewsLink){ reviewsLink.href = CONFIG.reviewsUrl; }
+  var writeReviewLink = document.getElementById('writeReviewLink');
+  if(writeReviewLink){ writeReviewLink.href = CONFIG.reviewsUrl; }
+
+  // ---------- ESTILOS: reveal + carrossel horizontal no mobile ----------
+  var stylesGrid = document.getElementById('stylesGrid');
+  var stylesDots = document.getElementById('stylesDots');
+  if(stylesGrid){
+    if('IntersectionObserver' in window){
+      var stylesIO = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){ stylesGrid.classList.add('is-visible'); stylesIO.disconnect(); }
+        });
+      }, {threshold:0.2});
+      stylesIO.observe(stylesGrid);
+    } else {
+      stylesGrid.classList.add('is-visible');
+    }
+
+    var styleCards = Array.prototype.slice.call(stylesGrid.children);
+    styleCards.forEach(function(card, i){
+      var dot = document.createElement('button');
+      if(i === 0) dot.className = 'is-active';
+      dot.setAttribute('aria-label', 'Ir para especialidade ' + (i + 1));
+      dot.addEventListener('click', function(){
+        card.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest'});
+      });
+      stylesDots.appendChild(dot);
+    });
+    var stylesScrollTimer;
+    stylesGrid.addEventListener('scroll', function(){
+      clearTimeout(stylesScrollTimer);
+      stylesScrollTimer = setTimeout(function(){
+        var center = stylesGrid.scrollLeft + stylesGrid.clientWidth / 2;
+        var closest = 0, closestDist = Infinity;
+        styleCards.forEach(function(card, i){
+          var dist = Math.abs((card.offsetLeft + card.offsetWidth / 2) - center);
+          if(dist < closestDist){ closestDist = dist; closest = i; }
+        });
+        Array.prototype.forEach.call(stylesDots.children, function(dot, i){
+          dot.classList.toggle('is-active', i === closest);
+        });
+      }, 100);
+    }, {passive:true});
+  }
 
   // ---------- 3D TILT ON HOVER ----------
   var fineHover = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
